@@ -86,7 +86,7 @@ def http_command_login(ipaddr):
     global sessionId
 
     p = (("command", "login"), ("username", "root"), ("password", "csl"))
-    r = requests.get("http://" + ipaddr + "/API", params=p, timeout=2.5)
+    r = requests.get("http://" + ipaddr + "/API", params=p, timeout=5.0)
     if r.status_code == 200:
         content = r.content.decode("UTF-8")
         if content.find("session_id=") >= 0:
@@ -163,13 +163,13 @@ if ser.isOpen():
         ser.close()
         print(">> Unable to mount /dev/mmcblk2p6.  Program abort")
         sys.exit()
-    send_serial_command(b"ls ~/backuprootfs/ | grep FactoryDefault.tar.gz\n", "FactoryDefault.tar.gz\r\nroot@imx6dlsabresd:~# ", 5)
+    send_serial_command(b"ls ~/backuprootfs/ | grep -E 'FactoryDefault.tar.gz|factorydefault.tar.gz'\n", ".tar.gz\r\nroot@imx6dlsabresd:~# ", 5)
 
     # save the file name
     startIndex = 0
     endIndex = 0
     startIndex = response.find("rootfs",
-                             len("ls ~/backuprootfs/ | grep FactoryDefault.tar.gz\n"))
+                             len("ls ~/backuprootfs/ | grep -E 'FactoryDefault.tar.gz|factorydefault.tar.gz'\n"))
     endIndex = response.find("root@imx6dlsabresd:~#") - 2
     backupFileName = response[startIndex:endIndex]
 
@@ -185,14 +185,14 @@ if ser.isOpen():
     send_serial_command(b"export EXTRACT_UNSAFE_SYMLINKS=1\n", "root@imx6dlsabresd:~/originalrootfs# ", 5)
     send_serial_command(("tar xvzf ~/backuprootfs/" + backupFileName + "\n").encode('utf-8'), "root@imx6dlsabresd:~/originalrootfs# ", 1200)
     send_serial_command(b"ls /etc/systemd/system | grep default.target\n", "default.target\r\nroot@imx6dlsabresd:~/originalrootfs# ", 5)
-    send_serial_command(b"reboot\n", "imx6dlsabresd login: ", 60)
+    send_serial_command(b"reboot\n", "login: ", 60)
     send_serial_command(b"root\n", "Password: ", 5)
-    send_serial_command(b"csl\n", "root@imx6dlsabresd:~# ", 5)
-    send_serial_command(b"/opt/hostnameUnique_set\n", "root@imx6dlsabresd:~# ", 5)
+    send_serial_command(b"csl\n", ":~# ", 5)
+    send_serial_command(b"/opt/hostnameUnique_set\n", "~# ", 5)
 
     # extract hostname
-    startIndex = response.find("/opt/hostnameUnique_set") + len("/opt/hostnameUnique_set") + 2;
-    endIndex = response.find("root@imx6dlsabresd:~#") - 2;
+    startIndex = response.find("/opt/hostnameUnique_set") + len("/opt/hostnameUnique_set") + 2
+    endIndex = response.find("root@") - 2
     if startIndex < 0 or endIndex < 0 or (startIndex > endIndex):
         # timed out
         ser.close()
