@@ -211,7 +211,7 @@ if ser.isOpen():
     send_serial_command(b"csl\n", "root@" + hostname + ":~# ", 5)
 
     print(">> Set new IP address")
-    send_serial_command(b"ps aux | grep connman\n", "root@csl-7b8401f6:~# ", 5)
+    send_serial_command(b"ps aux | grep connman\n", "root@" + hostname + ":~# ", 5)
 
     psOutput = response.split("\r\n");
     ps = ""
