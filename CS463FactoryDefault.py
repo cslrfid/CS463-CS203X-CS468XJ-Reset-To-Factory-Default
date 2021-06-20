@@ -86,7 +86,7 @@ def http_command_login(ipaddr):
     global sessionId
 
     p = (("command", "login"), ("username", "root"), ("password", "csl"))
-    r = requests.get("http://" + ipaddr + "/API", params=p, timeout=5.0)
+    r = requests.get("http://" + ipaddr + "/API", params=p, timeout=10.0)
     if r.status_code == 200:
         content = r.content.decode("UTF-8")
         if content.find("session_id=") >= 0:
@@ -97,7 +97,7 @@ def http_command_login(ipaddr):
 
 def http_command_forcelogout(ipaddr):
     p = (("command", "forceLogout"), ("username", "root"), ("password", "csl"))
-    r = requests.get("http://" + ipaddr + "/API", params=p, timeout=2.5)
+    r = requests.get("http://" + ipaddr + "/API", params=p, timeout=10.0)
     if r.status_code == 200:
         if r.content.decode("UTF-8").find("OK") >= 0:
             return True
@@ -117,7 +117,7 @@ def http_command_setNetworkConfig(ipaddr, mask, defaultGw):
          ("dns_server1", "8.8.8.8"),
          ("dns_server2", defaultGw))
 
-    r = requests.get("http://" + ipaddr + "/API", params=p, timeout=2.5)
+    r = requests.get("http://" + ipaddr + "/API", params=p, timeout=10.0)
     if r.status_code == 200:
         if r.content.decode("UTF-8").find("OK:") >= 0:
             return True
@@ -207,6 +207,11 @@ if ser.isOpen():
         print("\n>> Factory default completed.  Program exit.")
         sys.exit()
 
+    # Wait for two minutes until t
+    for i in range(120, -1, -1):
+        time.sleep(1)
+        print("\r>> Wait for {0:d} seconds".format(i), end="")
+
     send_serial_command(b"root\n", "Password: ", 5)
     send_serial_command(b"csl\n", "root@" + hostname + ":~# ", 5)
 
@@ -229,7 +234,8 @@ if ser.isOpen():
     send_serial_command(b"ifconfig eth0 up\n", "root@" + hostname + ":~# ", 5)
     send_serial_command(("ifconfig eth0 " + defaultIP + "\n").encode("utf-8"), "root@" + hostname + ":~# ", 5)
 
-    for i in range(120, -1, -1):
+    # Wait for two minutes until t
+    for i in range(150, -1, -1):
         time.sleep(1)
         print("\r>> Wait for {0:d} seconds".format(i), end="")
 
