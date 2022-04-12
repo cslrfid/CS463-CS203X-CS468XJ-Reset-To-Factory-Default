@@ -12,6 +12,7 @@ backupFileName = ""
 hostname = ""
 sessionId = ""
 config = ConfigParser()
+regDnfRepository = ""
 
 try:
     config.read("config.ini")
@@ -19,6 +20,7 @@ try:
     defaultIP = config.get("Network", "DefaultIP")
     defaultGateway = config.get("Network", "DefaultGateway")
     defaultMask = config.get("Network", "DefaultMask")
+    regDnfRepository = config.get("Configurations", "DnfRepoUrl")
     print("CSL Factory Default Tool")
     print("Serial Port: " + serPort)
     ser = serial.Serial(serPort, 115200, timeout=0.1)  # open serial port
@@ -253,7 +255,14 @@ if ser.isOpen():
         print(">> Unable to set network config through HTTP.  Program abort")
         sys.exit()
 
+    if regDnfRepository != "":
+        print(">> Register DNF repository for additional packages")
+        repoFileCmd = "printf \"[cslrepo]\nname=CSL Intelligent Reader Repository\nbaseurl={" \
+                      "}\nenabled=1\ngpgcheck=0\" > /etc/yum.repos.d/csl-remote-repo.repo\n".format(regDnfRepository)
+        send_serial_command(repoFileCmd.encode("utf-8"), ":~# ", 5)
+
     send_serial_command(b"reboot\n", hostname + " login: ", 60)
+
     print("\n>> Factory default completed.  Program exit.")
 
 else:
