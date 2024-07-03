@@ -1,4 +1,4 @@
-# Factory Default Tool for CSL Fixed RFID Readers
+# Factory Default Tool for CS463, CS203X and CS468XJ Fixed RFID Readers
 
 Command-line tool for putting CS463, CS203X and CS468XJ fixed readers back to factory default mode, controlling the reader via the debug serial interface
 
