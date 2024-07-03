@@ -1,6 +1,6 @@
 # Factory Default Tool for CSL Fixed RFID Readers
 
-Command-line tool for putting CSL fixed readers back to factory default mode through the debug serial interface
+Command-line tool for putting CS463, CS203X and CS468XJ fixed readers back to factory default mode, controlling the reader via the debug serial interface
 
 ### Related Products
 
@@ -31,7 +31,9 @@ Command-line tool for putting CSL fixed readers back to factory default mode thr
 	After that, please also connect your computer to the reader via the same network being configure.  For the example above, the IP address of the network interface connected to the reader should be in the same network 192.168.1.XXX 
 	
 	If network information is not entered in *config.ini*, IP address will not be set after factory default and it will be stay in the default value 192.168.25.160.
-	
-5. Run the file CS463FactoryDefault.exe in the folder
-6. Power up the reader and it will boot into recovery mode.  The entire file system will be refreshed to default.  The process would usually take around 15 minutes
+
+5. Make sure the COM port in #3 is not occupied by other applications.
+6. Run the file CS463FactoryDefault.exe in the folder or open up a command prompt window, change directory to the *dist" folder and run from there.
+7. Follow the instructions of powering down and powering up the reader.
+8. Note that When powering up the reader and it will boot into recovery mode.  The entire file system will be refreshed to default.  The process usually takes around 15 minutes
 
