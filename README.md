@@ -32,7 +32,7 @@ Command-line tool for putting CS463, CS203X and CS468XJ fixed readers back to fa
 	
 	If network information is not entered in *config.ini*, IP address will not be set after factory default and it will be stay in the default value 192.168.25.160.
 
-5. Make sure the COM port in #3 is not occupied by other applications.
+5. Make sure the COM port mentioned in step 3 is not occupied by other applications.
 6. Run the file CS463FactoryDefault.exe in the folder or open up a command prompt window, change directory to the *dist" folder and run from there.
 7. Follow the instructions of powering down and powering up the reader.
 8. Note that When powering up the reader and it will boot into recovery mode.  The entire file system will be refreshed to default.  The process usually takes around 15 minutes
