@@ -37,3 +37,7 @@ Command-line tool for putting CS463, CS203X and CS468XJ fixed readers back to fa
 7. Follow the instructions of powering down and powering up the reader.
 8. Note that When powering up the reader and it will boot into recovery mode.  The entire file system will be refreshed to default.  The process usually takes around 15 minutes
 
+### setup build python to EXE
+1. pip install pyserial
+2. pip install requests
+1. python setup.py py2exe
